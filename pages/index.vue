@@ -3,11 +3,16 @@
     <p>canUseSW: {{ canUseSW ? 'true' : 'false' }}</p>
     <p>canUsePM: {{ canUsePM ? 'true' : 'false' }}</p>
     <p>permission: {{ notifyPermission }}</p>
+
+    <button @click="subscribeAndSave">subscribe</button>
   </div>
 </template>
 
 <script>
-import { registerServiceWorker, askPermission } from '@/utils/index'
+import { registerServiceWorker, askPermission, subscribe } from '@/utils/index'
+import { saveSubscription } from '@/http/api'
+
+let registration
 
 export default {
   data() {
@@ -23,10 +28,21 @@ export default {
       return
     }
 
-    registerServiceWorker()
+    registerServiceWorker().then((res) => {
+      registration = res
+    })
 
     if (this.notifyPermission !== 'granted') {
-      askPermission().then((res) => console.log('askPermission res', res))
+      askPermission()
+    }
+  },
+
+  methods: {
+    subscribeAndSave() {
+      subscribe(registration).then((pushSubscription) => {
+        console.log(JSON.stringify(pushSubscription))
+        saveSubscription(pushSubscription)
+      })
     }
   }
 }
