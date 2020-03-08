@@ -80,10 +80,11 @@ const pushMsg = async function(ctx, next) {
     }
   }
 
-  let res
+  const body = await coBody(ctx.req)
 
+  let res
   try {
-    await webpush.sendNotification(pushSubscription)
+    res = await webpush.sendNotification(pushSubscription, body.msg)
   } catch (error) {
     res = error
   }
