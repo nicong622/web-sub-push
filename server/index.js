@@ -37,9 +37,9 @@ async function start() {
     await builder.build()
   }
 
-  router.post('/api/save-subscription', controllers.saveSubscribe)
-  router.get('/api/get-sub-list', controllers.getSubList)
-  router.post('/api/trigger-push-msg', controllers.pushMsg)
+  router.post('/web-push/api/save-subscription', controllers.saveSubscribe)
+  router.get('/web-push/api/get-sub-list', controllers.getSubList)
+  router.post('/web-push/api/trigger-push-msg', controllers.pushMsg)
   app.use(router.routes())
 
   app.use((ctx) => {

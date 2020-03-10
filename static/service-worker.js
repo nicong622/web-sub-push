@@ -1,8 +1,13 @@
 self.addEventListener('push', function(event) {
-  console.log('event: ', event)
   if (event.data) {
-    console.log('This push event has data: ', event.data.text())
+    const notifyObj = event.data.json()
+    const promiseChain = self.registration.showNotification(
+      notifyObj.title,
+      notifyObj.body
+    )
+
+    event.waitUntil(promiseChain)
   } else {
-    console.log('This push event has no data.')
+    console.log('has received push, but no event data', event)
   }
 })
